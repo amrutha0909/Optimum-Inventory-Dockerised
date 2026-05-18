@@ -11,8 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const JWT_SECRET = 'your_super_secret_key_123';
-const MONGO_URI = 'mongodb://localhost:27017/inventory_optimum';
+const MONGO_URI = process.env.MONGO_URI;
 
 mongoose.connect(MONGO_URI)
   .then((conn) => console.log(`MongoDB Connected: ${conn.connection.host}`))

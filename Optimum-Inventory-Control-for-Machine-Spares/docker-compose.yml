@@ -1,6 +1,6 @@
 version: "3.8"
 
-services:  
+services:
   mongo:
     image: mongo
     ports:
@@ -10,6 +10,11 @@ services:
     build: ./backend
     ports:
       - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/inventory_optimum
+      - JWT_SECRET=your_super_secret_key_123
+    depends_on:
+      - mongo
 
   frontend:
     build: ./frontend
