@@ -19,7 +19,7 @@ const Login = () => {
     const endpoint = isLogin ? '/login' : '/register';
     
     try {
-      const res = await axios.post(`http://3.27.145.31:5000/api/auth${endpoint}`, formData);
+      const res = await axios.post(`http://3.27.145.31:3000/api/auth${endpoint}`, formData);
       if (isLogin) {
         login(res.data.token, res.data.username);
         navigate('/'); 

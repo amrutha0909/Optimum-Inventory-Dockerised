@@ -33,7 +33,7 @@ const Settings = () => {
 
   const downloadCSV = async () => {
     try {
-      const res = await axios.get('http://3.27.145.31:5000/api/spares');
+      const res = await axios.get('http://3.27.145.31:3000/api/spares');
       const data = res.data;
       
       let csvContent = "data:text/csv;charset=utf-8,";
