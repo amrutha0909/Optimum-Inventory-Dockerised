@@ -32,7 +32,7 @@ const AddStock = () => {
 
   const fetchSpares = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/spares');
+      const res = await axios.get('http://3.27.145.31:5000/api/spares');
       setSpares(res.data);
     } catch (err) { console.error(err); }
   };
@@ -42,7 +42,7 @@ const AddStock = () => {
     if (!selectedSpare || !quantity) return;
 
     try {
-      await axios.patch(`http://localhost:5000/api/spares/${selectedSpare}/restock`, {
+      await axios.patch(`http://3.27.145.31:5000/api/spares/${selectedSpare}/restock`, {
         quantity: parseInt(quantity)
       });
       

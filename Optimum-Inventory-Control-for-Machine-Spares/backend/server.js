@@ -10,9 +10,9 @@ const User = require('./models/User');
 const app = express();
 app.use(cors());
 app.use(express.json());
-
+require('dotenv').config();
 const MONGO_URI = process.env.MONGO_URI;
-
+const JWT_SECRET = process.env.JWT_SECRET;
 mongoose.connect(MONGO_URI)
   .then((conn) => console.log(`MongoDB Connected: ${conn.connection.host}`))
   .catch(err => console.error('MongoDB Connection Error:', err));

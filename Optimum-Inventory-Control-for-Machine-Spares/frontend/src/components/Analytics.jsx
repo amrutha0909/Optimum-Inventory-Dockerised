@@ -17,7 +17,7 @@ const Analytics = () => {
 
   const fetchAndProcessData = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/spares');
+      const res = await axios.get('http://3.27.145.31:5000/api/spares');
       const data = res.data;
       const processedData = data.map(item => ({
         ...item,
