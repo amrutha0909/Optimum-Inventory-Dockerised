@@ -1,0 +1,59 @@
+pipeline {
+    agent any
+
+    // Trigger the pipeline automatically on GitHub webhook push
+    triggers {
+        githubPush()
+    }
+
+    // Set up environment variables if needed
+    environment {
+        // You can store your env files securely in Jenkins and load them here
+        // or inject environment variables via Jenkins credentials
+        COMPOSE_PROJECT_NAME = 'inventory_optimum'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout code from the source repository configured in the Jenkins job
+                checkout scm
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Placeholder for future unit/integration tests
+                echo 'Running Tests...'
+                echo 'Tests passed! (Placeholder)'
+                // Example of running tests:
+                // sh 'docker compose -f docker-compose.test.yml up --build --abort-on-container-exit'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying application via Docker Compose...'
+                // Build new images and restart containers in detached mode
+                sh 'docker compose up -d --build'
+            }
+        }
+
+        stage('Cleanup') {
+            steps {
+                echo 'Cleaning up unused Docker resources...'
+                // Remove dangling images to free up disk space
+                sh 'docker image prune -f'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline executed successfully! The application is up and running.'
+        }
+        failure {
+            echo 'Pipeline failed. Please check the Jenkins console output for details.'
+        }
+    }
+}
