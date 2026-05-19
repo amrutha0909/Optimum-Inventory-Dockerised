@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { Lock, User } from 'lucide-react';
 
 const BASE_URL = "http://3.27.145.31:5000";
-
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({ username: '', password: '' });
@@ -20,11 +19,11 @@ const Login = () => {
     e.preventDefault();
     setError('');
 
-    const endpoint = isLogin ? '/login' : '/register';
+    const endpoint = isLogin ? 'login' : 'register';
 
     try {
       const res = await axios.post(
-        `${BASE_URL}/api/auth${endpoint}`,
+        `${BASE_URL}/api/auth/${endpoint}`,
         formData
       );
 
