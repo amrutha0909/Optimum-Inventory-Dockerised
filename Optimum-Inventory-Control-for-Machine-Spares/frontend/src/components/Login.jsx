@@ -4,6 +4,8 @@ import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Lock, User } from 'lucide-react';
 
+const BASE_URL = "http://3.27.145.31:5000";
+
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({ username: '', password: '' });
@@ -11,18 +13,24 @@ const Login = () => {
   const navigate = useNavigate();
   const [error, setError] = useState('');
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
     const endpoint = isLogin ? '/login' : '/register';
-    
+
     try {
-      const res = await axios.post(`http://3.27.145.31:3000/api/auth${endpoint}`, formData);
+      const res = await axios.post(
+        `${BASE_URL}/api/auth${endpoint}`,
+        formData
+      );
+
       if (isLogin) {
         login(res.data.token, res.data.username);
-        navigate('/'); 
+        navigate('/');
       } else {
         alert('Registration successful! Please login.');
         setIsLogin(true);
@@ -38,28 +46,54 @@ const Login = () => {
         <h2 className="text-3xl font-extrabold text-slate-800 mb-2 text-center">
           {isLogin ? 'Welcome Back' : 'Create Account'}
         </h2>
-        <p className="text-slate-500 text-center mb-6">Inventory Control System</p>
-        
-        {error && <div className="p-3 bg-red-100 text-red-700 rounded-lg mb-4 text-sm">{error}</div>}
+        <p className="text-slate-500 text-center mb-6">
+          Inventory Control System
+        </p>
+
+        {error && (
+          <div className="p-3 bg-red-100 text-red-700 rounded-lg mb-4 text-sm">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
             <User className="absolute left-3 top-3 text-slate-400" size={18} />
-            <input name="username" placeholder="Username" onChange={handleChange} className="w-full pl-10 p-3 bg-slate-50 border rounded-xl" required />
+            <input
+              name="username"
+              placeholder="Username"
+              onChange={handleChange}
+              className="w-full pl-10 p-3 bg-slate-50 border rounded-xl"
+              required
+            />
           </div>
+
           <div className="relative">
             <Lock className="absolute left-3 top-3 text-slate-400" size={18} />
-            <input type="password" name="password" placeholder="Password" onChange={handleChange} className="w-full pl-10 p-3 bg-slate-50 border rounded-xl" required />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              onChange={handleChange}
+              className="w-full pl-10 p-3 bg-slate-50 border rounded-xl"
+              required
+            />
           </div>
-          
-          <button type="submit" className="w-full py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition">
+
+          <button
+            type="submit"
+            className="w-full py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition"
+          >
             {isLogin ? 'Login' : 'Register'}
           </button>
         </form>
 
         <p className="mt-4 text-center text-sm text-slate-600">
           {isLogin ? "Don't have an account? " : "Already have an account? "}
-          <button onClick={() => setIsLogin(!isLogin)} className="text-indigo-600 font-bold hover:underline">
+          <button
+            onClick={() => setIsLogin(!isLogin)}
+            className="text-indigo-600 font-bold hover:underline"
+          >
             {isLogin ? 'Sign Up' : 'Login'}
           </button>
         </p>
