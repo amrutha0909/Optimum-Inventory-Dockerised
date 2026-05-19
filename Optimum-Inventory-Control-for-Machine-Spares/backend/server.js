@@ -20,18 +20,40 @@ mongoose.connect(MONGO_URI)
 
 
 app.post('/api/auth/register', async (req, res) => {
-  const { username, password } = req.body;
   try {
+    console.log("REGISTER BODY:", req.body);
+
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password required' });
+    }
+
     const existingUser = await User.findOne({ username });
-    if (existingUser) return res.status(400).json({ error: 'Username already taken' });
+
+    if (existingUser) {
+      return res.status(400).json({ error: 'Username already taken' });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ username, password: hashedPassword });
+
+    const user = new User({
+      username,
+      password: hashedPassword
+    });
+
     await user.save();
-    
-    res.status(201).json({ message: 'User registered successfully' });
+
+    res.status(201).json({
+      message: 'User registered successfully'
+    });
+
   } catch (err) {
-    res.status(500).json({ error: 'Error registering user' });
+    console.error("REGISTER ERROR:", err);
+
+    res.status(500).json({
+      error: err.message
+    });
   }
 });
 
