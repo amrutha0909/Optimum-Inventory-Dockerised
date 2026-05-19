@@ -9,7 +9,7 @@ services:
   backend:
     build: ./backend
     ports:
-      - "5001:5000"
+      - "5000:5000"
     environment:
       MONGO_URI: mongodb://mongo:27017/inventory_optimum
       JWT_SECRET: your_super_secret_key_123
