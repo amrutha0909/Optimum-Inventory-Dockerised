@@ -5,7 +5,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { IndianRupee, Package, Activity, ArrowUpRight } from 'lucide-react';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-
+const API_BASE = "http://3.27.145.31:5000";
 const Analytics = () => {
   const [spares, setSpares] = useState([]);
   const [abcStats, setAbcStats] = useState({ A: 0, B: 0, C: 0 });
@@ -17,7 +17,8 @@ const Analytics = () => {
 
   const fetchAndProcessData = async () => {
     try {
-      const res = await axios.get('http://3.27.145.31:3000/api/spares');
+      
+      const res = await axios.get(`${API_BASE}/api/spares`);
       const data = res.data;
       const processedData = data.map(item => ({
         ...item,

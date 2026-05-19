@@ -13,11 +13,11 @@ const Reports = () => {
 
   const fetchData = async () => {
     try {
-      const invRes = await axios.get('http://3.27.145.31:3000/api/spares');
+      const invRes = await axios.get('http://3.27.145.31:5000/api/spares');
       const totalVal = invRes.data.reduce((sum, item) => sum + (item.currentStock * item.unitPrice), 0);
       setCurrentValue(totalVal);
 
-      const transRes = await axios.get('http://3.27.145.31:3000/api/transactions');
+      const transRes = await axios.get('http://3.27.145.31:5000/api/transactions');
       setTransactions(transRes.data);
 
       const today = new Date().toDateString();
