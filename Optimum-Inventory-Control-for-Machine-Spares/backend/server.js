@@ -6,11 +6,26 @@ const jwt = require('jsonwebtoken');
 const Transaction = require('./models/Transaction');
 const SparePart = require('./models/SparePart');
 const User = require('./models/User');
+const promBundle = require("express-prom-bundle");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 require('dotenv').config();
+
+const metricsMiddleware = promBundle({
+  includeMethod: true,
+  includePath: true,
+  includeStatusCode: true,
+  includeUp: true,
+  customLabels: {project_name: 'inventory_backend'},
+  promClient: {
+    collectDefaultMetrics: {
+    }
+  }
+});
+app.use(metricsMiddleware);
+
 const MONGO_URI = process.env.MONGO_URI;
 const JWT_SECRET = process.env.JWT_SECRET;
 const connectDB = async () => {

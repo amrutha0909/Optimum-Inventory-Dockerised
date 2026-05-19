@@ -1,6 +1,5 @@
-version: "3.8"
-
 services:
+
   mongo:
     image: mongo
     ports:
@@ -25,6 +24,28 @@ services:
       - "3000:80"
     depends_on:
       - backend
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    depends_on:
+      - backend
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - prometheus
 
 volumes:
   mongo_data:
