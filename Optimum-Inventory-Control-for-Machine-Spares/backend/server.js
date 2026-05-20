@@ -12,7 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 require('dotenv').config();
-
+const PORT=5000;
 const metricsMiddleware = promBundle({
   includeMethod: true,
   includePath: true,
@@ -26,19 +26,26 @@ const metricsMiddleware = promBundle({
 });
 app.use(metricsMiddleware);
 
-const MONGO_URI = process.env.MONGO_URI;
-const JWT_SECRET = process.env.JWT_SECRET;
-const connectDB = async () => {
+const startServer = async () => {
   try {
     const conn = await mongoose.connect(MONGO_URI);
+
     console.log(`MongoDB Connected: ${conn.connection.host}`);
+
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+
   } catch (err) {
     console.error('MongoDB Connection Error:', err.message);
+
     console.log('Retrying in 5 seconds...');
-    setTimeout(connectDB, 5000);
+
+    setTimeout(startServer, 5000);
   }
 };
-connectDB();
+
+startServer();
 app.post('/api/auth/register', async (req, res) => {
   try {
     console.log("REGISTER BODY:", req.body);
