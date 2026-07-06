@@ -36,27 +36,49 @@ const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
 const JWT_SECRET = process.env.JWT_SECRET;
 
+// Disable command buffering so queries fail fast if DB is disconnected
+mongoose.set('bufferCommands', false);
+
 // -------------------- DB CONNECTION + SERVER START --------------------
 
-const startServer = async () => {
+const connectDB = async () => {
   try {
     const conn = await mongoose.connect(MONGO_URI);
     console.log(`MongoDB Connected: ${conn.connection.host}`);
-
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-
   } catch (err) {
     console.error('MongoDB Connection Error:', err.message);
     console.log('Retrying in 5 seconds...');
-    setTimeout(startServer, 5000);
+    setTimeout(connectDB, 5000);
   }
 };
 
-startServer();
+connectDB();
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+// -------------------- HEALTHCHECK ROUTE --------------------
+
+app.get('/api/health', (req, res) => {
+  const dbStatus = mongoose.connection.readyState;
+  const statusMap = {
+    0: 'disconnected',
+    1: 'connected',
+    2: 'connecting',
+    3: 'disconnecting'
+  };
+  res.json({
+    status: 'ok',
+    database: {
+      status: statusMap[dbStatus] || 'unknown',
+      readyState: dbStatus
+    }
+  });
+});
 
 // -------------------- AUTH ROUTES --------------------
+
 
 app.post('/api/auth/register', async (req, res) => {
   try {
