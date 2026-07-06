@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { AlertTriangle, CheckCircle, TrendingUp, Trash2 } from 'lucide-react';
+import API_BASE from '../config';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -19,7 +20,7 @@ const Dashboard = () => {
 
   const fetchSpares = async () => {
     try {
-      const res = await axios.get('http://3.27.145.31:5000/api/spares');
+      const res = await axios.get(`${API_BASE}/api/spares`);
       setSpares(res.data);
     } catch (err) { console.error(err); }
   };
@@ -28,7 +29,7 @@ const Dashboard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post('http://3.27.145.31:5000/api/spares', formData);
+    await axios.post(`${API_BASE}/api/spares`, formData);
     fetchSpares();
     setFormData({ name: '', sku: '', annualDemand: '', orderingCost: '', unitPrice: '', holdingCostRate: '', leadTimeDays: '', currentStock: '' });
   };
@@ -49,7 +50,7 @@ const Dashboard = () => {
     }
 
     try {
-      await axios.patch(`http://3.27.145.31:5000/api/spares/${id}/consume`, { quantity: qty });
+      await axios.patch(`${API_BASE}/api/spares/${id}/consume`, { quantity: qty });
       fetchSpares();
     } catch (err) {
       console.error(err);
@@ -60,7 +61,7 @@ const Dashboard = () => {
   const deleteItem = async (id) => {
     if (window.confirm('Are you sure you want to delete this item permanently?')) {
       try {
-        await axios.delete(`http://3.27.145.31:5000/api/spares/${id}`);
+        await axios.delete(`${API_BASE}/api/spares/${id}`);
         fetchSpares();
       } catch (err) {
         console.error("Delete Failed:", err);

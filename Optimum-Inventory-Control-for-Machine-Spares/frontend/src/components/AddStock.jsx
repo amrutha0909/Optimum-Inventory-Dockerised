@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { PackagePlus, Search, Truck, History, Trash2 } from 'lucide-react';
 
-const API_BASE = "http://3.27.145.31:5000";
+import API_BASE from '../config';
 
 const AddStock = () => {
   const navigate = useNavigate();

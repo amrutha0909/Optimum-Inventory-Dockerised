@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Save, Download, Trash2, MapPin, Building2, Calculator, AlertOctagon } from 'lucide-react';
+import API_BASE from '../config';
 
 const Settings = () => {
   const [config, setConfig] = useState({
@@ -33,7 +34,7 @@ const Settings = () => {
 
   const downloadCSV = async () => {
     try {
-      const res = await axios.get('http://3.27.145.31:5000/api/spares');
+      const res = await axios.get(`${API_BASE}/api/spares`);
       const data = res.data;
       
       let csvContent = "data:text/csv;charset=utf-8,";

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { IndianRupee, ArrowDownLeft, ArrowUpRight, Calendar, Clock, Trash2, PlusCircle } from 'lucide-react';
+import API_BASE from '../config';
 
 const Reports = () => {
   const [transactions, setTransactions] = useState([]);
@@ -13,11 +14,11 @@ const Reports = () => {
 
   const fetchData = async () => {
     try {
-      const invRes = await axios.get('http://3.27.145.31:5000/api/spares');
+      const invRes = await axios.get(`${API_BASE}/api/spares`);
       const totalVal = invRes.data.reduce((sum, item) => sum + (item.currentStock * item.unitPrice), 0);
       setCurrentValue(totalVal);
 
-      const transRes = await axios.get('http://3.27.145.31:5000/api/transactions');
+      const transRes = await axios.get(`${API_BASE}/api/transactions`);
       setTransactions(transRes.data);
 
       const today = new Date().toDateString();

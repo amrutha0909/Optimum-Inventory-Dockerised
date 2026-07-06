@@ -5,7 +5,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { IndianRupee, Package, Activity, ArrowUpRight } from 'lucide-react';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-const API_BASE = "http://3.27.145.31:5000";
+import API_BASE from '../config';
 const Analytics = () => {
   const [spares, setSpares] = useState([]);
   const [abcStats, setAbcStats] = useState({ A: 0, B: 0, C: 0 });
